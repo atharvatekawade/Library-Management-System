@@ -542,10 +542,6 @@ def viewuser(value,top):
         messagebox.showerror("Error","No user with this username")
     else:
         id=int(flag[0])
-        current_date = date.today().isoformat()
-        current_date=str(current_date)
-        current_date=current_date.split('-')
-        end=date(int(current_date[0]),int(current_date[1]),int(current_date[2]))
         mycursor.execute("select * from users")
         d={}
         result=mycursor.fetchall()
@@ -571,7 +567,17 @@ def viewuser(value,top):
                 days_after=str(days_after)
                 b=days_after.split('-')
                 start = date(int(b[0]),int(b[1]),int(b[2]))
-                days=np.busday_count(start,end)
+                if(i[4]=='Not'):
+                    current_date = date.today().isoformat()
+                    current_date=str(current_date)
+                    current_date=current_date.split('-')
+                    end=date(int(current_date[0]),int(current_date[1]),int(current_date[2]))
+                    days=np.busday_count(start,end)
+                else:
+                    dt=i[4].split('-')
+                    #print('Hello world returned')
+                    end=date(int(dt[0]),int(dt[1]),int(dt[2]))
+                    days=np.busday_count(start,end)
                 days=int(days)
                 if(days<0):
                     days=0
@@ -587,7 +593,17 @@ def viewuser(value,top):
                 days_after=str(days_after)
                 b=days_after.split('-')
                 start = date(int(b[0]),int(b[1]),int(b[2]))
-                days=np.busday_count(start,end)
+                if(i[4]=='Not'):
+                    current_date = date.today().isoformat()
+                    current_date=str(current_date)
+                    current_date=current_date.split('-')
+                    end=date(int(current_date[0]),int(current_date[1]),int(current_date[2]))
+                    days=np.busday_count(start,end)
+                else:
+                    dt=i[4].split('-')
+                    end=date(int(dt[0]),int(dt[1]),int(dt[2]))
+                    days=np.busday_count(start,end)
+                #days=np.busday_count(start,end)
                 days=int(days)
                 if(days<0):
                     days=0
@@ -1779,6 +1795,7 @@ def viewbookdues(dues):
     for i in dates:
         for j in result:
             if(j[4]=='Not'):
+                print(j)
                 issue=str(j[3])
                 span=int(d[j[1]][1])
                 date_time_obj = datetime.strptime(issue, '%Y-%m-%d')
